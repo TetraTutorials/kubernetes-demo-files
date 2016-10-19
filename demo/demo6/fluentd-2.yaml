@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fluentd-elasticsearch-2
+  namespace: kube-system
+spec:
+  containers:
+  - name: fluentd-elasticsearch-2
+    image: gcr.io/google_containers/fluentd-elasticsearch:1.9
+    resources:
+      limits:
+        cpu: 100m
+    env:
+    - name: "FLUENTD_ARGS"
+      value: "-qq"
+    volumeMounts:
+    - name: varlog
+      mountPath: /varlog
+    - name: containers
+      mountPath: /mnt/ephemeral/docker/containers
+  terminationGracePeriodSeconds: 30
+  volumes:
+  - name: varlog
+    hostPath:
+      path: /var/log
+  - name: containers
+    hostPath:
+      path: /mnt/ephemeral/docker/containers
+  nodeSelector:
+    kubernetes.io/hostname: ip-172-20-0-254.eu-west-1.compute.internal

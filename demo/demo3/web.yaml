@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: my-web-app
+spec:  # specification of the pod's contents
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: my-web-app
+    spec:
+      containers:
+      - name: my-web-app
+        image: tetranoodle/docker-web
+        ports:
+        - containerPort: 80
